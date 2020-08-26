@@ -9,7 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      this.hasOne(models.CompanyMember, {foreignKey: 'id'});
       // define association here
+
     }
   }
   User.init(

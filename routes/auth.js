@@ -6,9 +6,10 @@ require("../config/passport")(passport);
 const User = require("../models").User;
 
 router.post("/signup", function (req, res) {
-  console.log(req.body);
+  // console.log(req.body);
   if (!req.body.email || !req.body.password) {
     res.status(400).json({ msg: "Please pass email and password." });
+    return;
   } else {
     User.create({
       email: req.body.email,
@@ -20,7 +21,7 @@ router.post("/signup", function (req, res) {
           "nodeauthsecret",
           { expiresIn: 86400 * 30 }
         );
-        res.status(201).json({ user, accessToken: token });
+        res.status(201).json({ user, token });
       })
       .catch((error) => {
         console.log(error);
