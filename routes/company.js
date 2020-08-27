@@ -6,7 +6,10 @@ const User = require("../models").User;
 const CompanyMember = require("../models").CompanyMember;
 const { authenticateJWT } = require("../middleware/auth");
 
-/* GET home page. */
+router.get("/all", authenticateJWT, async function (req, res, next) {
+  const companies = await Company.findAll({});
+  res.json({ companies });
+});
 router.get("/", authenticateJWT, async function (req, res, next) {
   const userMembership = await CompanyMember.findOne({
     where: {
@@ -112,7 +115,7 @@ router.get("/members/:companyID", authenticateJWT, async function (
     where: { company_id: req.params.companyID },
     include: { model: User, as: "User", attributes: { exclude: ["password"] } },
   });
-  members = members.map((m) => m.User)
+  members = members.map((m) => m.User);
 
   res.json({ members });
 });
