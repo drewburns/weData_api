@@ -1,0 +1,25 @@
+version: '2'
+
+services:
+  web:
+    container_name: WeDataApi
+    build: .
+    command: npx sequelize-cli db:migrate
+    command: npm start
+    volumes:
+      - .:/usr/app/
+      - ./node_modules:/usr/app/node_modules
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+    env_file:
+     - ./.env
+
+  postgres:
+    image: postgres:9.6.2-alpine
+    container_name: weDataDb
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_DB: wedata_node_dev
+      POSTGRES_PASSWORD: root
