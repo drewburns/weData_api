@@ -77,4 +77,39 @@ router.post("/create", authenticateJWT, async function (req, res, next) {
   res.json(projectWithParticipants);
 });
 
+router.get("/:projectID", authenticateJWT, async function (req, res, next) {
+  // get the company_id of the user
+  const userMembership = await CompanyMember.findOne({
+    where: { user_id: req.user.id },
+    include: Company,
+  });
+
+  if (!userMembership) {
+    res.status(400).json({ msg: "You arent in a company" });
+    return;
+  }
+
+  const project = await Project.findOne({
+    where: { id: req.params.projectID },
+    include: [{ model: ProjectParticipant, include: Company }],
+  });
+
+  if (!project) {
+    res.status(400).json({ msg: "Project doesnt exist" });
+    return;
+  }
+
+  const companiesInProject = project.ProjectParticipants.map(
+    (p) => p.Company.id
+  );
+
+  if (!companiesInProject.includes(userMembership.Company.id)) {
+    res.status(400).json({ msg: "You arent in this project" });
+    return;
+  }
+
+  res.json(project);
+
+});
+
 module.exports = router;
