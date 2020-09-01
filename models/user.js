@@ -42,6 +42,7 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
   User.associate = function (models) {
+    this.hasOne(models.CompanyMember, { foreignKey: "user_id" });
     // associations can be defined here
   };
   return User;

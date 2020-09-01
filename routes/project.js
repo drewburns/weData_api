@@ -7,7 +7,9 @@ const router = express.Router();
 const Project = require("../models").Project;
 const User = require("../models").User;
 const Company = require("../models").Company;
+const Query = require("../models").Query;
 const CompanyMember = require("../models").CompanyMember;
+const Column = require("../models").Column;
 
 const { authenticateJWT } = require("../middleware/auth");
 const ProjectParticipant = require("../models").ProjectParticipant;
@@ -91,7 +93,10 @@ router.get("/:projectID", authenticateJWT, async function (req, res, next) {
 
   const project = await Project.findOne({
     where: { id: req.params.projectID },
-    include: [{ model: ProjectParticipant, include: Company }],
+    include: [
+      { model: ProjectParticipant, include: Company },
+      { model: Query, include: [Column] },
+    ],
   });
 
   if (!project) {
@@ -109,7 +114,6 @@ router.get("/:projectID", authenticateJWT, async function (req, res, next) {
   }
 
   res.json(project);
-
 });
 
 module.exports = router;

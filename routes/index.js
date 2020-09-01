@@ -5,7 +5,7 @@ var router = express.Router();
 router.get("/fakeData1", function (req, res, next) {
   const fakeData = [
     {
-      shipmentID: 1,
+      shipmentID: 7,
       arrivalDate: "June 3,2020 4:40PM EST",
       port: "Los Angeles",
     },

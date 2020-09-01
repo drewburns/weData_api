@@ -75,7 +75,7 @@ router.post("/addMember", authenticateJWT, async function (req, res, next) {
   const doesMemberExist = await CompanyMember.findOne({
     where: {
       user_id: userWithEmail.id,
-      company_id: req.body.company_id,
+      // company_id: req.body.company_id,
     },
   });
   if (doesMemberExist) {
