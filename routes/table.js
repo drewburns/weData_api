@@ -11,6 +11,8 @@ const DataPoint = require("../models").DataPoint;
 
 const { authenticateJWT } = require("../middleware/auth");
 
+const { Op } = require("sequelize");
+
 // router.get("/")
 router.post("/upsertQuery", authenticateJWT, async function (req, res, next) {
   const { query_id, link, p_key, name, project_id } = req.body;
@@ -71,12 +73,14 @@ router.get("/dataForPKeysColumns", authenticateJWT, async function (
   next
 ) {
   // need p_key_value and column_id to find values;
-  console.log(req.query);
   var { p_key_values, column_ids } = req.query;
+  if (column_ids != "") {
+    column_ids = column_ids.split(",");
+  } else {
+    column_ids = []
+  }
   p_key_values = p_key_values.split(",");
-  column_ids = column_ids.split(",");
 
-  console.log("here!");
   const dataPoints = await DataPoint.findAll({
     where: {
       column_id: column_ids,
@@ -85,6 +89,10 @@ router.get("/dataForPKeysColumns", authenticateJWT, async function (
   });
 
   res.json(dataPoints);
+});
+
+router.post("/deleteColumn", authenticateJWT, async function (req, res, next) {
+  const { column_id } = req.body;
 });
 
 module.exports = router;

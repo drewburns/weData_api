@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Query extends Model {
     /**
@@ -12,17 +10,23 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       this.belongsTo(models.Project, { foreignKey: "project_id" });
-      this.hasMany(models.Column, { foreignKey: "query_id" });
+      this.hasMany(models.Column, {
+        foreignKey: "query_id",
+        onDelete: "cascade",
+      });
     }
-  };
-  Query.init({
-    name: DataTypes.STRING,
-    link: DataTypes.STRING,
-    p_key: DataTypes.STRING,
-    project_id: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'Query',
-  });
+  }
+  Query.init(
+    {
+      name: DataTypes.STRING,
+      link: DataTypes.STRING,
+      p_key: DataTypes.STRING,
+      project_id: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: "Query",
+    }
+  );
   return Query;
 };
