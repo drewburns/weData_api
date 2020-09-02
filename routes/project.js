@@ -33,6 +33,7 @@ router.get("/", authenticateJWT, async function (req, res, next) {
 
   const projects = await Project.findAll({
     where: { id: companiesProjects.map((c) => c.project_id) },
+    order: [["createdAt", "DESC"]],
     include: [{ model: ProjectParticipant, include: Company }],
   });
 
