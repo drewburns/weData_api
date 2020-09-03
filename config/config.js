@@ -1,9 +1,9 @@
 module.exports = {
   development: {
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
+    username: "root",
+    password: "root",
     database: "wedata_node_dev",
-    host: process.env.DB_HOST,
+    host: "weDataDb",
     dialect: "postgres",
   },
   test: {
@@ -14,10 +14,10 @@ module.exports = {
     dialect: "postgres",
   },
   production: {
-    username: "root",
-    password: null,
-    database: "database_production",
-    host: "127.0.0.1",
+    username: process.env.DB_PROD_USERNAME,
+    password: process.env.DB_PROD_PASSWORD,
+    database: "wedata_node_prod",
+    host: process.env.DB_PROD_HOST,
     dialect: "postgres",
   },
 };
