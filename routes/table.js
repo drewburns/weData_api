@@ -93,6 +93,12 @@ router.get("/dataForPKeysColumns", authenticateJWT, async function (
 
 router.post("/deleteColumn", authenticateJWT, async function (req, res, next) {
   const { column_id } = req.body;
+  console.log(column_id);
+  const response = await Column.destroy({ where: { id: column_id } });
+  if (response) {
+    res.json("OK");
+  } else {
+  }
 });
 
 router.post("/toggleHideColumn", authenticateJWT, async function (
