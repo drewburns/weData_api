@@ -77,7 +77,7 @@ router.get("/dataForPKeysColumns", authenticateJWT, async function (
   if (column_ids != "") {
     column_ids = column_ids.split(",");
   } else {
-    column_ids = []
+    column_ids = [];
   }
   p_key_values = p_key_values.split(",");
 
@@ -93,6 +93,44 @@ router.get("/dataForPKeysColumns", authenticateJWT, async function (
 
 router.post("/deleteColumn", authenticateJWT, async function (req, res, next) {
   const { column_id } = req.body;
+});
+
+router.post("/toggleHideColumn", authenticateJWT, async function (
+  req,
+  res,
+  next
+) {
+  const { queryID, colName } = req.body;
+  // console.log(queryID, colName);
+  const query = await Query.findOne({ where: { id: queryID } });
+  if (!query.hidden_columns) {
+    const response = await query.update({ hidden_columns: colName });
+    // console.log(res);
+    res.json("OK");
+    return;
+  }
+
+  // await query.update({hidden_columns: ''});
+  if (query.hidden_columns.includes(colName)) {
+    var newHiddenCols = [...query.hidden_columns.split(",")];
+    var index = newHiddenCols.indexOf(colName);
+    newHiddenCols.splice(index, 1);
+    const response = await query.update({
+      hidden_columns: newHiddenCols.join(","),
+    });
+    res.json("OK");
+    return;
+  } else {
+    const newHiddenCols = query.hidden_columns
+      .split(",")
+      .concat(colName)
+      .join(",");
+    const response = await query.update({
+      hidden_columns: newHiddenCols,
+    });
+    res.json("OK");
+    return;
+  }
 });
 
 module.exports = router;

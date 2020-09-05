@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       link: DataTypes.STRING,
       p_key: DataTypes.STRING,
       project_id: DataTypes.INTEGER,
+      hidden_columns: DataTypes.STRING,
     },
     {
       sequelize,
