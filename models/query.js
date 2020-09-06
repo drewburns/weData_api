@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       this.belongsTo(models.Project, { foreignKey: "project_id" });
+      this.belongsTo(models.Template, { foreignKey: "template_id" });
       this.hasMany(models.Column, {
         foreignKey: "query_id",
         onDelete: "cascade",
@@ -23,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       p_key: DataTypes.STRING,
       project_id: DataTypes.INTEGER,
       hidden_columns: DataTypes.STRING,
+      template_id: DataTypes.INTEGER,
     },
     {
       sequelize,

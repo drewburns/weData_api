@@ -10,6 +10,7 @@ var authRoutes = require("./routes/auth");
 var companyRoutes = require("./routes/company");
 var projectRoutes = require("./routes/project");
 var tableRoutes = require("./routes/table");
+var templateRoutes = require("./routes/template");
 
 var cors = require("cors");
 
@@ -30,6 +31,7 @@ app.use("/auth", authRoutes);
 app.use("/company", companyRoutes);
 app.use("/project", projectRoutes);
 app.use("/table", tableRoutes);
+app.use("/template", templateRoutes);
 
 
 

@@ -12,6 +12,7 @@ const CompanyMember = require("../models").CompanyMember;
 const Column = require("../models").Column;
 
 const { authenticateJWT } = require("../middleware/auth");
+const { createQueryFromTemplate } = require("../helpers/project");
 const ProjectParticipant = require("../models").ProjectParticipant;
 
 /* GET users listing. */
@@ -41,6 +42,7 @@ router.get("/", authenticateJWT, async function (req, res, next) {
 });
 
 router.post("/create", authenticateJWT, async function (req, res, next) {
+  const { name, company_ids, template_id } = req.body;
   // get the company_id of the user
   const userMembership = await CompanyMember.findOne({
     where: { user_id: req.user.id },
@@ -54,7 +56,7 @@ router.post("/create", authenticateJWT, async function (req, res, next) {
 
   // uses the company id of only the company they are a part of
   const newProject = await Project.create({
-    name: req.body.name,
+    name,
     owner_company_id: userMembership.Company.id,
   });
 
@@ -66,8 +68,9 @@ router.post("/create", authenticateJWT, async function (req, res, next) {
   });
 
   // now create participants in the project
+  //TODO: dont allow company to be added twice!
   await Promise.all(
-    req.body.company_ids.map((company_id) => {
+    company_ids.map((company_id) => {
       ProjectParticipant.create({ company_id, project_id: newProject.id });
     })
   );
@@ -77,6 +80,14 @@ router.post("/create", authenticateJWT, async function (req, res, next) {
     where: { id: newProject.id },
     include: [{ model: ProjectParticipant, include: Company }],
   });
+
+  if (template_id) {
+    const newQuery = await createQueryFromTemplate(newProject, template_id);
+    if (newQuery.error) {
+      res.status(500).json({ msg: "Error making query" });
+      return;
+    }
+  }
   res.json(projectWithParticipants);
 });
 

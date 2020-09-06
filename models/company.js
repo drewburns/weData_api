@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       // Company.hasMany(CompanyMember);
       this.hasMany(models.CompanyMember, { foreignKey: "company_id" });
+      this.hasMany(models.Template, { foreignKey: "company_id" });
       this.hasMany(models.ProjectParticipant, { foreignKey: "project_id" });
     }
   }
