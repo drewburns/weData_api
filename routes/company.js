@@ -4,10 +4,20 @@ var router = express.Router();
 const Company = require("../models").Company;
 const User = require("../models").User;
 const CompanyMember = require("../models").CompanyMember;
+const { Op } = require("sequelize");
 const { authenticateJWT } = require("../middleware/auth");
 
 router.get("/all", authenticateJWT, async function (req, res, next) {
-  const companies = await Company.findAll({});
+  const userMembership = await CompanyMember.findOne({
+    where: {
+      user_id: req.user.id,
+    },
+    include: Company,
+  });
+
+  const companies = await Company.findAll({
+    where: { id: { [Op.not]: userMembership.Company.id } },
+  });
   res.json({ companies });
 });
 router.get("/", authenticateJWT, async function (req, res, next) {
