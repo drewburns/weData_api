@@ -7,11 +7,12 @@ const User = require("../models").User;
 
 router.post("/signup", function (req, res) {
   // console.log(req.body);
-  if (!req.body.email || !req.body.password) {
+  if (!req.body.email || !req.body.password || !req.body.name) {
     res.status(400).json({ msg: "Please pass email and password." });
     return;
   } else {
     User.create({
+      name: req.body.name,
       email: req.body.email,
       password: req.body.password,
     })

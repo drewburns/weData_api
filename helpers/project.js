@@ -13,7 +13,7 @@ const createQueryFromTemplate = async (project, template_id) => {
   // and return
 
   const newQuery = await Query.create({
-    name: `From template: ${template.name}`,
+    name: `Query from template: ${template.name}`,
     link: template.link,
     p_key: template.primary_key,
     project_id: project.id,
