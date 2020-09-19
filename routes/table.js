@@ -67,11 +67,7 @@ router.post("/upsertDataPoint", authenticateJWT, async function (
   // res.json(record);
 });
 
-router.get("/dataForPKeysColumns", authenticateJWT, async function (
-  req,
-  res,
-  next
-) {
+router.get("/dataForPKeysColumns", async function (req, res, next) {
   // need p_key_value and column_id to find values;
   var { p_key_values, column_ids } = req.query;
   if (column_ids != "") {

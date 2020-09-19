@@ -17,6 +17,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       name: DataTypes.STRING,
       owner_company_id: DataTypes.INTEGER,
+      shared: DataTypes.BOOLEAN,
+      share_uuid: DataTypes.STRING,
     },
     {
       sequelize,
