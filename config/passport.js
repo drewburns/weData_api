@@ -7,7 +7,7 @@ const User = require("../models").User;
 module.exports = function (passport) {
   const opts = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme("JWT"),
-    secretOrKey: "nodeauthsecret",
+    secretOrKey: process.env.JWT_KEY,
   };
   passport.use(
     "jwt",

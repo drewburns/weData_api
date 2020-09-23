@@ -19,7 +19,7 @@ router.post("/signup", function (req, res) {
       .then((user) => {
         const token = jwt.sign(
           JSON.parse(JSON.stringify(user)),
-          "nodeauthsecret",
+          process.env.JWT_KEY,
           { expiresIn: 86400 * 30 }
         );
         res.status(201).json({ user, token });
@@ -48,10 +48,10 @@ router.post("/login", function (req, res) {
           user.password = "";
           var token = jwt.sign(
             JSON.parse(JSON.stringify(user)),
-            "nodeauthsecret",
+            process.env.JWT_KEY,
             { expiresIn: 86400 * 30 }
           );
-          jwt.verify(token, "nodeauthsecret", function (err, data) {
+          jwt.verify(token, process.env.JWT_KEY, function (err, data) {
             // console.log(err, data);
           });
           res.json({ token, user });

@@ -7,7 +7,7 @@ const authenticateJWT = (req, res, next) => {
     const token = authHeader.split(" ")[1];
 
     // TODO: fix this!!
-    jwt.verify(token, "nodeauthsecret", (err, user) => {
+    jwt.verify(token, process.env.JWT_KEY, (err, user) => {
       if (err) {
         return res.sendStatus(403);
       }
